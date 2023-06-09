@@ -5,11 +5,11 @@ import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 import org.processmining.InductiveMinerPlugin;
 import org.processmining.acceptingpetrinet.models.AcceptingPetriNet;
+import org.processmining.acceptingpetrinet.models.impl.AcceptingPetriNetFactory;
+import org.processmining.acceptingpetrinet.models.impl.AcceptingPetriNetImpl;
 import org.processmining.plugins.InductiveMiner.efficienttree.EfficientTree;
-import org.processmining.plugins.InductiveMiner.efficienttree.EfficientTree2AcceptingPetriNet;
+import org.processmining.plugins.InductiveMiner.efficienttree.PetrinetImplExt;
 import org.processmining.plugins.InductiveMiner.plugins.EfficientTreeExportPlugin;
-import org.springframework.ui.Model;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,14 +18,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.AttributedString;
 
 @RestController
 public class WebController {
 
 
     @GetMapping("/inductiveMiner/efficientTree")
-    public String inductiveMiner(@RequestParam(value = "path", defaultValue = "running-example.xes") String path) {
+    public String inductiveMinerEfficientTree(@RequestParam(value = "path", defaultValue = "running-example.xes") String path) {
 
         InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
 
@@ -88,4 +87,27 @@ public class WebController {
                 "</html>";
     }
 
+    @GetMapping
+    public String inductiveMinerAcceptingPetrinet(@RequestParam(value = "path", defaultValue = "running-example.xes") String path) {
+        InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
+
+        String path2 = "running-example.xes";
+        String xesPath = path2;
+        XesXmlParser xesParser = new XesXmlParser();
+        XLog log = null;
+        try {
+            log = xesParser.parse(new File(xesPath)).get(0);
+            System.out.println("Imported Event Log summary:");
+            System.out.println("Number of traces: " + log.size());
+            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
+
+            AcceptingPetriNet result = inductiveMinerPlugin.mineGuiAcceptingPetriNet(log);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+       return "Manque du converter accepting petrinet --> web";
+    }
 }

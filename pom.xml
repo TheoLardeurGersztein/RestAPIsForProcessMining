@@ -40,7 +40,7 @@
 			<artifactId>spring-context</artifactId>
 			<version>6.0.9</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-mockmvc</artifactId>
@@ -79,21 +79,15 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<!-- <version>3.12</version> -->
-			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.12.0.jar</systemPath>
-
+			<version>3.12.0</version>
 		</dependency>
-
-
 
 		<dependency>
 		    <groupId>org.processmining.plugins.InductiveMiner</groupId>
 		    <artifactId>InductiveMiner</artifactId>
 		    <version>1.0</version>
 		    <scope>system</scope>
-		    <systemPath>/home/lardeur/.ivy2/cache/prom/InductiveMiner/jars/InductiveMiner-latest.jar</systemPath>
+		    <systemPath>${project.basedir}/lib/InductiveMiner-latest.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -101,15 +95,7 @@
 			<artifactId>InductiveMinerDeprecated</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/InductiveMinerDeprecated/jars/InductiveMinerDeprecated-latest.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>example</groupId>
-			<artifactId>example</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Plugins/jars/ProM-Plugins-latest.jar</systemPath>
+			<systemPath>${project.basedir}/lib/InductiveMinerDeprecated-latest.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -117,7 +103,7 @@
 			<artifactId>acceptingPetrinet</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/AcceptingPetriNet/jars/AcceptingPetriNet-latest.jar</systemPath>
+			<systemPath>${project.basedir}/lib/AcceptingPetriNet-latest.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -125,7 +111,7 @@
 			<artifactId>context</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Contexts/jars/ProM-Contexts-latest.jar</systemPath>
+			<systemPath>${project.basedir}/lib/ProM-Contexts-latest.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -133,31 +119,7 @@
 			<artifactId>prom-framwork</artifactId>
 			<version>1.0.0</version>
 			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Framework/jars/ProM-Framework-latest.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>org.deckfour.xes</groupId>
-			<artifactId>xes</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom-libs/OpenXES/jars/OpenXES-20211004.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>petri</groupId>
-			<artifactId>petri</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/PetriNets/jars/PetriNets-latest.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>org.processmining.models</groupId>
-			<artifactId>models</artifactId>
-			<version>1.0.0</version>
-			<scope>system</scope>
-			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Models/jars/ProM-Models-latest.jar</systemPath>
+			<systemPath>${project.basedir}/lib/ProM-Framework-latest.jar</systemPath>
 		</dependency>
 		 	
 	</dependencies>

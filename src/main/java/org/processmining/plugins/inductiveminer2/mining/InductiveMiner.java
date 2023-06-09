@@ -42,7 +42,6 @@ public class InductiveMiner {
 		MinerState minerState = new MinerState(parameters, canceller);
 
 		if (canceller.isCancelled()) {
-			System.out.println("Je suis la1");
 			minerState.shutdownThreadPools();
 			return null;
 		}
@@ -50,17 +49,13 @@ public class InductiveMiner {
 		EfficientTree tree = mineNode(log, minerState);
 
 		if (canceller.isCancelled()) {
-			System.out.println("Je suis la2");
-
 			minerState.shutdownThreadPools();
 			return null;
 		}
 
 		//reduce the tree
 		if (parameters.getReduceParameters() != null) {
-			System.out.println("Je suis la3");
-
-			try {
+						try {
 				EfficientTreeReduce.reduce(tree, parameters.getReduceParameters());
 				debug("after reduction " + tree.getRoot(), minerState);
 			} catch (UnknownTreeNodeException | ReductionFailedException e) {
@@ -71,14 +66,11 @@ public class InductiveMiner {
 		minerState.shutdownThreadPools();
 
 		if (canceller.isCancelled()) {
-			System.out.println("Je suis la4");
-
 			return null;
 		}
 
 		debug("discovered tree " + tree, minerState);
 
-		System.out.println(tree + "Tes sulll");
 		return tree;
 	}
 

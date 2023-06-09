@@ -8,7 +8,6 @@ import org.processmining.acceptingpetrinet.models.AcceptingPetriNet;
 import org.processmining.contexts.cli.CLIContext;
 import org.processmining.contexts.cli.CLIPluginContext;
 import org.processmining.framework.plugin.PluginContext;
-import org.processmining.models.graphbased.directed.petrinet.Petrinet;
 import org.processmining.plugins.InductiveMiner.efficienttree.EfficientTree;
 import org.processmining.plugins.InductiveMiner.efficienttree.EfficientTree2AcceptingPetriNet;
 import org.processmining.plugins.InductiveMiner.plugins.EfficientTree2AcceptingPetriNetPlugin;
