@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.1.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>org.processmining</groupId>
+	<artifactId>RestAPIsForProcessMining</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>RestAPIsForProcessMining</name>
+	<description>Rest APIs For Process Mining</description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	
+	<dependencies>
+
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>6.0.9</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.restdocs</groupId>
+			<artifactId>spring-restdocs-mockmvc</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.trove4j</groupId>
+			<artifactId>trove4j</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.uni.freiburg.iig.telematik</groupId>
+			<artifactId>SEWOL</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>16.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<!-- <version>3.12</version> -->
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.12.0.jar</systemPath>
+
+		</dependency>
+
+
+
+		<dependency>
+		    <groupId>org.processmining.plugins.InductiveMiner</groupId>
+		    <artifactId>InductiveMiner</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>/home/lardeur/.ivy2/cache/prom/InductiveMiner/jars/InductiveMiner-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.processmining.plugins.InductiveMinerDeprecated</groupId>
+			<artifactId>InductiveMinerDeprecated</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/InductiveMinerDeprecated/jars/InductiveMinerDeprecated-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>example</groupId>
+			<artifactId>example</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Plugins/jars/ProM-Plugins-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.processmining.acceptingpetrinet</groupId>
+			<artifactId>acceptingPetrinet</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/AcceptingPetriNet/jars/AcceptingPetriNet-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.processmining.contexts</groupId>
+			<artifactId>context</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Contexts/jars/ProM-Contexts-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.processmining.framework</groupId>
+			<artifactId>prom-framwork</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Framework/jars/ProM-Framework-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.deckfour.xes</groupId>
+			<artifactId>xes</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom-libs/OpenXES/jars/OpenXES-20211004.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>petri</groupId>
+			<artifactId>petri</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/PetriNets/jars/PetriNets-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>org.processmining.models</groupId>
+			<artifactId>models</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>/home/lardeur/.ivy2/cache/prom/ProM-Models/jars/ProM-Models-latest.jar</systemPath>
+		</dependency>
+		 	
+	</dependencies>
+	
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
