@@ -1,4 +1,4 @@
-package org.processmining.plugins.inductiveminer2.mining;
+package org.processmining.plugins.inductiveminer2;
 
 import gnu.trove.set.TIntSet;
 import org.deckfour.xes.model.XLog;
@@ -17,6 +17,10 @@ import org.processmining.plugins.inductiveminer2.loginfo.IMLog2IMLogInfoDefault;
 import org.processmining.plugins.inductiveminer2.loginfo.IMLogInfo;
 import org.processmining.plugins.inductiveminer2.logs.IMLog;
 import org.processmining.plugins.inductiveminer2.logs.IMLogImpl;
+import org.processmining.plugins.inductiveminer2.mining.InductiveMiner;
+import org.processmining.plugins.inductiveminer2.mining.MinerState;
+import org.processmining.plugins.inductiveminer2.mining.MiningParameters;
+import org.processmining.plugins.inductiveminer2.mining.MiningParametersAbstract;
 import org.processmining.plugins.inductiveminer2.variants.MiningParametersIM;
 
 import java.util.ArrayList;

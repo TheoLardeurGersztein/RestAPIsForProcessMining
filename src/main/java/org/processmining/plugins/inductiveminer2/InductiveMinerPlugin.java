@@ -27,7 +27,7 @@ import org.processmining.plugins.InductiveMiner.plugins.dialogs.IMMiningDialog;
 import org.processmining.plugins.InductiveMiner.reduceacceptingpetrinet.ReduceAcceptingPetriNetKeepLanguage;
 import org.processmining.plugins.inductiveminer2.logs.IMLog;
 import org.processmining.plugins.inductiveminer2.mining.InductiveMiner;
-import org.processmining.plugins.inductiveminer2.mining.InductiveMinerDefaultParameter;
+import org.processmining.plugins.inductiveminer2.InductiveMinerDefaultParameter;
 import org.processmining.plugins.inductiveminer2.mining.MiningParameters;
 
 import java.awt.*;

@@ -1,19 +1,11 @@
 package org.processmining.plugins.splitminer;
 
-import au.edu.qut.processmining.miners.splitminer.SplitMiner;
-import au.edu.qut.processmining.miners.splitminer.ui.dfgp.DFGPUIResult;
-import au.edu.qut.processmining.miners.splitminer.ui.miner.SplitMinerUIResult;
-import com.raffaeleconforti.conversion.bpmn.BPMNToPetriNetConverter;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import org.apache.commons.collections15.Transformer;
-import org.deckfour.xes.in.XesXmlParser;
-import org.deckfour.xes.model.XLog;
-import org.deckfour.xes.model.XTrace;
-import org.processmining.models.graphbased.directed.bpmn.BPMNDiagram;
 import org.processmining.models.graphbased.directed.petrinet.Petrinet;
 import org.processmining.models.graphbased.directed.petrinet.PetrinetEdge;
 import org.processmining.models.graphbased.directed.petrinet.PetrinetNode;
@@ -23,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 @Component
 public class MinePetrinetWithSplitMiner {
