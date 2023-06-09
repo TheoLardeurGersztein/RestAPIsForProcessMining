@@ -91,6 +91,14 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.processmining.plugins.PetriNet</groupId>
+			<artifactId>PetriNet</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/PetriNets-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
 			<groupId>org.processmining.plugins.InductiveMinerDeprecated</groupId>
 			<artifactId>InductiveMinerDeprecated</artifactId>
 			<version>1.0</version>
@@ -121,7 +129,25 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/ProM-Framework-latest.jar</systemPath>
 		</dependency>
-		 	
+
+		<dependency>
+			<groupId>org.processmining.plugins.BPMN</groupId>
+			<artifactId>BPMN</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/BPMN-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>splitminer</groupId>
+			<artifactId>splitminer</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/splitminer.jar</systemPath>
+		</dependency>
+
+
+
 	</dependencies>
 	
 
