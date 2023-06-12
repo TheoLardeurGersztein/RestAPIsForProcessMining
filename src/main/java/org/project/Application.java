@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class Application {
 	
     public static void main(String[] args) {
+        System.setProperty("java.awt.headless", "false");
+
         SpringApplication.run(Application.class, args);
+
     }
 
     @GetMapping("/welcome")
