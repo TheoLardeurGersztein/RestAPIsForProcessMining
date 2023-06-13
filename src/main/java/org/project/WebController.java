@@ -45,11 +45,11 @@ import java.nio.file.Path;
 @RestController
 public class WebController {
 
-    final String defaultPath = "./src/main/resources/datasets/test.xes";
+    final String defaultPath = "./src/main/resources/datasets/reviewing.xes";
 
     final int WIDTH = 1600;
 
-    final int HEIGH = 100;
+    final int HEIGH = 1000;
 
     @GetMapping("/inductiveMiner/efficientTree")
     public ResponseEntity<Resource> inductiveMinerEfficientTree(@RequestParam(value = "path", defaultValue = defaultPath) String path) {
