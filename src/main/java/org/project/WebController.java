@@ -10,6 +10,7 @@ import com.raffaeleconforti.conversion.bpmn.BPMNToPetriNetConverter;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
+import org.processmining.models.jgraph.ProcessTreeVisualisation;
 import org.processmining.models.jgraph.VisualizeAcceptingPetriNetPlugin;
 import org.processmining.models.graphbased.AttributeMap;
 import org.processmining.models.graphbased.ViewSpecificAttributeMap;
@@ -45,11 +46,11 @@ import java.nio.file.Path;
 public class WebController {
 
     @GetMapping("/inductiveMiner/efficientTree")
-    public String inductiveMinerEfficientTree(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
+    public ResponseEntity<Resource> inductiveMinerEfficientTree(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
 
         InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
 
-        String path2 = "running-example42.xes";
+        String path2 = "L9.xes";
         String xesPath = path2;
         XesXmlParser xesParser = new XesXmlParser();
         XLog log = null;
@@ -63,59 +64,61 @@ public class WebController {
             e.printStackTrace();
         }
 
-        EfficientTree result = inductiveMinerPlugin.mineGuiProcessTree(log);
-        System.out.println(result);
-
-        File file = new File("EfficientTree");
-        try {
-            EfficientTreeExportPlugin.export(result, file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-/*
-        AcceptingPetriNet acceptingPetriNet = EfficientTree2AcceptingPetriNet.convert(result);
-
-        CLIContext cliContext = new CLIContext();
-        CLIPluginContext cliPluginContext = new CLIPluginContext(cliContext, "inductive miner");
 
         try {
-            acceptingPetriNet.exportToFile(cliPluginContext, new File("Result.xml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            log = xesParser.parse(new File(xesPath)).get(0);
+            System.out.println("Imported Event Log summary:");
+            System.out.println("Number of traces: " + log.size());
+            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
+
+            EfficientTree result = inductiveMinerPlugin.mineGuiProcessTree(log);
+
+
+            FakePluginContext fakePluginContext = new FakePluginContext();
+            JPanel jPanel = ProcessTreeVisualisation.fancy(fakePluginContext, result);
+
+            JFrame frame = new JFrame();
+            frame.setSize(1200, 800);
+            frame.add(jPanel);
+            frame.setVisible(true);
+
+            Thread.sleep(1000);
+
+            BufferedImage petriNetImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+            Graphics graphics = petriNetImage.createGraphics();
+            jPanel.paint(graphics);
+            graphics.dispose();
+
+            File outputfile = new File("/home/lardeur/Cassiop/RestAPIsForProcessMining/src/main/java/org/test/image.png");
+            ImageIO.write(petriNetImage, "png", outputfile);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(petriNetImage, "png", baos);
+            byte[] imageBytes = baos.toByteArray();
+            ByteArrayResource resource = new ByteArrayResource(imageBytes);
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG);
+            headers.setContentLength(imageBytes.length);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        /InductiveMinerPlugin.visualizePetrinet(acceptingPetriNet);
- */
-
-        //VisualizeAcceptingPetriNetPlugin.visualize();
-
-
-        String content = null;
-        Path filePath = Path.of("EfficientTree");
-        try {
-            content = Files.readString(filePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "  <head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>Une page</title>\n" +
-                "  </head>\n" +
-                "  <body>\n" +
-                "        <p>" + content.replace("\n", "<br>").replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;") + "</p>\n" +
-                "  </body>\n" +
-                "</html>";
+        return null;
     }
 
     @GetMapping("/inductiveMiner/acceptingPetriNet")
     public ResponseEntity<Resource> inductiveMinerAcceptingPetrinet(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
         InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
 
-        String path2 = "running-example42.xes";
+        String path2 = "L9.xes";
         String xesPath = path2;
         XesXmlParser xesParser = new XesXmlParser();
         XLog log = null;

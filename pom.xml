@@ -146,6 +146,22 @@
 			<systemPath>${project.basedir}/lib/splitminer.jar</systemPath>
 		</dependency>
 
+		<dependency>
+			<groupId>org.processmining.plugins.graphviz</groupId>
+			<artifactId>graphviz</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/GraphViz-latest.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>com.kitfox.svg</groupId>
+			<artifactId>kitfox</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/KitFox-latest.jar</systemPath>
+		</dependency>
+
 
 
 	</dependencies>
