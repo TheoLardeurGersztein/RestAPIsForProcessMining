@@ -17,9 +17,9 @@ import org.processmining.models.graphbased.ViewSpecificAttributeMap;
 import org.processmining.models.graphbased.directed.bpmn.BPMNDiagram;
 import org.processmining.models.graphbased.directed.petrinet.Petrinet;
 import org.processmining.models.graphbased.directed.petrinet.elements.Place;
-import org.processmining.models.jgraph.ProMJGraphPanel;
 import org.processmining.models.jgraph.ProMJGraphVisualizer;
 import org.processmining.models.semantics.petrinet.Marking;
+import org.processmining.plugins.InductiveMiner.efficienttree.EfficientTreeReduce;
 import org.processmining.plugins.inductiveminer2.InductiveMinerPlugin;
 import org.processmining.acceptingpetrinet.models.AcceptingPetriNet;
 import org.processmining.plugins.InductiveMiner.efficienttree.EfficientTree;
@@ -45,59 +45,28 @@ import java.nio.file.Path;
 @RestController
 public class WebController {
 
+    final String defaultPath = "./src/main/resources/datasets/test.xes";
+
+    final int WIDTH = 1600;
+
+    final int HEIGH = 100;
+
     @GetMapping("/inductiveMiner/efficientTree")
-    public ResponseEntity<Resource> inductiveMinerEfficientTree(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
+    public ResponseEntity<Resource> inductiveMinerEfficientTree(@RequestParam(value = "path", defaultValue = defaultPath) String path) {
+        XLog log = getXESFromPath(path);
 
-        InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
+        EfficientTree result = InductiveMinerPlugin.mineGuiProcessTree(log);
 
-        String path2 = "L9.xes";
-        String xesPath = path2;
-        XesXmlParser xesParser = new XesXmlParser();
-        XLog log = null;
-        try {
-            log = xesParser.parse(new File(xesPath)).get(0);
-            System.out.println("Imported Event Log summary:");
-            System.out.println("Number of traces: " + log.size());
-            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
+        FakePluginContext fakePluginContext = new FakePluginContext();
+        JPanel jPanel = ProcessTreeVisualisation.fancy(fakePluginContext, result);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        BufferedImage image = getBufferedImageFromJComponent(jPanel);
 
         try {
-            log = xesParser.parse(new File(xesPath)).get(0);
-            System.out.println("Imported Event Log summary:");
-            System.out.println("Number of traces: " + log.size());
-            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
-
-            EfficientTree result = inductiveMinerPlugin.mineGuiProcessTree(log);
-
-
-            FakePluginContext fakePluginContext = new FakePluginContext();
-            JPanel jPanel = ProcessTreeVisualisation.fancy(fakePluginContext, result);
-
-            JFrame frame = new JFrame();
-            frame.setSize(1200, 800);
-            frame.add(jPanel);
-            frame.setVisible(true);
-
-            Thread.sleep(1000);
-
-            BufferedImage petriNetImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-            Graphics graphics = petriNetImage.createGraphics();
-            jPanel.paint(graphics);
-            graphics.dispose();
-
-            File outputfile = new File("/home/lardeur/Cassiop/RestAPIsForProcessMining/src/main/java/org/test/image.png");
-            ImageIO.write(petriNetImage, "png", outputfile);
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(petriNetImage, "png", baos);
+            ImageIO.write(image, "png", baos);
             byte[] imageBytes = baos.toByteArray();
             ByteArrayResource resource = new ByteArrayResource(imageBytes);
-
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
@@ -106,51 +75,28 @@ public class WebController {
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(resource);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        return null;
     }
 
     @GetMapping("/inductiveMiner/acceptingPetriNet")
-    public ResponseEntity<Resource> inductiveMinerAcceptingPetrinet(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
+    public ResponseEntity<Resource> inductiveMinerAcceptingPetrinet(@RequestParam(value = "path", defaultValue = defaultPath) String path) throws EfficientTreeReduce.ReductionFailedException {
         InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
 
-        String path2 = "L9.xes";
-        String xesPath = path2;
-        XesXmlParser xesParser = new XesXmlParser();
-        XLog log = null;
+        XLog log = getXESFromPath(path);
+
+        AcceptingPetriNet result = inductiveMinerPlugin.mineGuiAcceptingPetriNet(log);
+
+        FakePluginContext fakePluginContext = new FakePluginContext();
+        JComponent jc = VisualizeAcceptingPetriNetPlugin.visualize(fakePluginContext, result);
+
+        BufferedImage image = getBufferedImageFromJComponent(jc);
+
         try {
-            log = xesParser.parse(new File(xesPath)).get(0);
-            System.out.println("Imported Event Log summary:");
-            System.out.println("Number of traces: " + log.size());
-            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
-
-            AcceptingPetriNet result = inductiveMinerPlugin.mineGuiAcceptingPetriNet(log);
-
-            FakePluginContext fakePluginContext = new FakePluginContext();
-            JComponent jc = VisualizeAcceptingPetriNetPlugin.visualize(fakePluginContext, result);
-
-            JFrame frame = new JFrame();
-            frame.setSize(1200, 800);
-            frame.add(jc);
-            frame.setVisible(true);
-
-            Thread.sleep(1000);
-
-            BufferedImage petriNetImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-            Graphics graphics = petriNetImage.createGraphics();
-            jc.paint(graphics);
-            graphics.dispose();
-
-            File outputfile = new File("/home/lardeur/Cassiop/RestAPIsForProcessMining/src/main/java/org/test/image.png");
-            ImageIO.write(petriNetImage, "png", outputfile);
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(petriNetImage, "png", baos);
+            ImageIO.write(image, "png", baos);
             byte[] imageBytes = baos.toByteArray();
             ByteArrayResource resource = new ByteArrayResource(imageBytes);
 
@@ -172,20 +118,9 @@ public class WebController {
     }
 
     @GetMapping("/splitminer")
-    public ResponseEntity<Resource> splitminer(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
+    public ResponseEntity<Resource> splitminer(@RequestParam(value = "path", defaultValue = defaultPath) String path) {
 
-        String xesPath = "running-example.xes";
-        XesXmlParser xesParser = new XesXmlParser();
-        XLog log = null;
-        try {
-            log = xesParser.parse(new File(xesPath)).get(0);
-            System.out.println("Imported Event Log summary:");
-            System.out.println("Number of traces: " + log.size());
-            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        XLog log = getXESFromPath(path);
 
         double eta = 0.4; //SplitMinerUIResult.FREQUENCY_THRESHOLD;	// 0.0 to 1.0
         double epsilon = 0.1; //SptlitMinerUIResult.PARALLELISMS_THRESHOLD;	// 0.0 to 1.0
@@ -196,7 +131,6 @@ public class WebController {
         Petrinet generatedPetriNet = (Petrinet) result[0];
         System.out.println("PETRINET GENERATED SUCCESSFULLY");
 
-
         Marking m = new Marking();
         ViewSpecificAttributeMap map = new ViewSpecificAttributeMap();
         for (Place p : m) {
@@ -206,36 +140,16 @@ public class WebController {
             map.putViewSpecific(p, AttributeMap.SHOWLABEL, !label.equals(""));
         }
         FakePluginContext fakePluginContext = new FakePluginContext();
+        JComponent jc = ProMJGraphVisualizer.instance().visualizeGraph(fakePluginContext, generatedPetriNet, map);
 
-        //
-        ProMJGraphPanel panel = ProMJGraphVisualizer.instance().visualizeGraph(fakePluginContext, generatedPetriNet, map);
-        //
+        BufferedImage image = getBufferedImageFromJComponent(jc);
+
 
         try {
-            JFrame frame = new JFrame();
-            frame.setSize(1200, 800);
-            frame.add(panel);
-            frame.setVisible(true);
-
-
-
-            Thread.sleep(1000);
-
-            BufferedImage petriNetImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-            Graphics graphics = petriNetImage.createGraphics();
-            panel.paint(graphics);
-            graphics.dispose();
-
-            File outputfile = new File("/home/lardeur/Cassiop/RestAPIsForProcessMining/src/main/java/org/test/image.png");
-            ImageIO.write(petriNetImage, "png", outputfile);
-
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(petriNetImage, "png", baos);
+            ImageIO.write(image, "png", baos);
             byte[] imageBytes = baos.toByteArray();
             ByteArrayResource resource = new ByteArrayResource(imageBytes);
-
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
@@ -245,14 +159,54 @@ public class WebController {
                     .headers(headers)
                     .body(resource);
 
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
 
     }
 
+    public XLog getXESFromPath(String path) {
+        String xesPath = path;
+        XesXmlParser xesParser = new XesXmlParser();
+        XLog log = null;
+        try {
+            log = xesParser.parse(new File(xesPath)).get(0);
+            System.out.println("Imported Event Log summary:");
+            System.out.println("Number of traces: " + log.size());
+            System.out.println("Number of events: " + log.stream().mapToInt(XTrace::size).sum());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return log;
+    }
+
+    public BufferedImage getBufferedImageFromJComponent(JComponent jComponent) {
+
+        try {
+            JFrame frame = new JFrame();
+            frame.setSize(WIDTH, HEIGH);
+            frame.add(jComponent);
+            frame.setVisible(true);
+
+            Thread.sleep(1000);
+
+            BufferedImage image = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+            Graphics graphics = image.createGraphics();
+            jComponent.paint(graphics);
+            graphics.dispose();
+
+            //Debug File...
+            File outputfile = new File("./src/main/resources/images.png");
+            ImageIO.write(image, "png", outputfile);
+
+            return image;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

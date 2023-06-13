@@ -41,7 +41,7 @@ public class InductiveMinerPlugin {
 					EfficientTree.class }, parameterLabels = { "Log" }, userAccessible = true)
 	@UITopiaVariant(affiliation = IMMiningDialog.affiliation, author = IMMiningDialog.author, email = IMMiningDialog.email)
 	@PluginVariant(variantLabel = "Mine a Process Tree, dialog", requiredParameterLabels = { 0 })
-	public EfficientTree mineGuiProcessTree(XLog xLog) {
+	public static EfficientTree mineGuiProcessTree(XLog xLog) {
 		
 		/* Get variables
 		InductiveMinerDialog dialog = new InductiveMinerDialog(xLog);
