@@ -10,6 +10,7 @@ import com.raffaeleconforti.conversion.bpmn.BPMNToPetriNetConverter;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
+import org.processmining.models.jgraph.VisualizeAcceptingPetriNetPlugin;
 import org.processmining.models.graphbased.AttributeMap;
 import org.processmining.models.graphbased.ViewSpecificAttributeMap;
 import org.processmining.models.graphbased.directed.bpmn.BPMNDiagram;
@@ -87,6 +88,8 @@ public class WebController {
         /InductiveMinerPlugin.visualizePetrinet(acceptingPetriNet);
  */
 
+        //VisualizeAcceptingPetriNetPlugin.visualize();
+
 
         String content = null;
         Path filePath = Path.of("EfficientTree");
@@ -108,8 +111,8 @@ public class WebController {
                 "</html>";
     }
 
-    @GetMapping
-    public String inductiveMinerAcceptingPetrinet(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
+    @GetMapping("/inductiveMiner/acceptingPetriNet")
+    public ResponseEntity<Resource> inductiveMinerAcceptingPetrinet(@RequestParam(value = "path", defaultValue = "running-example42.xes") String path) {
         InductiveMinerPlugin inductiveMinerPlugin = new InductiveMinerPlugin();
 
         String path2 = "running-example42.xes";
@@ -124,14 +127,45 @@ public class WebController {
 
             AcceptingPetriNet result = inductiveMinerPlugin.mineGuiAcceptingPetriNet(log);
 
+            FakePluginContext fakePluginContext = new FakePluginContext();
+            JComponent jc = VisualizeAcceptingPetriNetPlugin.visualize(fakePluginContext, result);
 
+            JFrame frame = new JFrame();
+            frame.setSize(1200, 800);
+            frame.add(jc);
+            frame.setVisible(true);
+
+            Thread.sleep(1000);
+
+            BufferedImage petriNetImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+            Graphics graphics = petriNetImage.createGraphics();
+            jc.paint(graphics);
+            graphics.dispose();
+
+            File outputfile = new File("/home/lardeur/Cassiop/RestAPIsForProcessMining/src/main/java/org/test/image.png");
+            ImageIO.write(petriNetImage, "png", outputfile);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(petriNetImage, "png", baos);
+            byte[] imageBytes = baos.toByteArray();
+            ByteArrayResource resource = new ByteArrayResource(imageBytes);
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_PNG);
+            headers.setContentLength(imageBytes.length);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        return null;
 
-       return "Manque du converter accepting petrinet --> web";
     }
 
     @GetMapping("/splitminer")
@@ -172,7 +206,6 @@ public class WebController {
 
         //
         ProMJGraphPanel panel = ProMJGraphVisualizer.instance().visualizeGraph(fakePluginContext, generatedPetriNet, map);
-        System.out.println(panel.getSize());
         //
 
         try {
